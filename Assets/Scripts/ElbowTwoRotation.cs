@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BotArmRotation : MonoBehaviour
+public class ElbowTwoRotation : MonoBehaviour
 {
     public GameObject lever;
-    public GameObject botElbowOne;
+    public GameObject botElbowTwo;
 
     HingeJoint botHinge;
     HingeJoint leverHinge;
@@ -14,13 +14,10 @@ public class BotArmRotation : MonoBehaviour
     public float leverAngle;
     public float botAngle;
 
-    public float botVelocity;
-    public float botForce;
-
     // Start is called before the first frame update
     void Start()
     {
-        botHinge = botElbowOne.GetComponent<HingeJoint>();
+        botHinge = botElbowTwo.GetComponent<HingeJoint>();
         leverHinge = lever.GetComponent<HingeJoint>();
         botMotor = botHinge.motor;
     }
@@ -31,19 +28,21 @@ public class BotArmRotation : MonoBehaviour
         leverAngle = leverHinge.angle;
         botAngle = botHinge.angle;
 
-        if(leverAngle > 5 || leverAngle < -5)
+        if (leverAngle > 10 || leverAngle < -10)
         {
-            botMotor.force = 150;
-            botMotor.targetVelocity = leverAngle;
+            botHinge.useMotor = true;
+            botMotor.force = 100;
+            botMotor.targetVelocity = leverAngle / 2;
             botMotor.freeSpin = false;
             botHinge.motor = botMotor;
         }
         else
         {
-            botMotor.force = 150;
+            botMotor.force = 200;
             botMotor.targetVelocity = 0;
             botMotor.freeSpin = false;
             botHinge.motor = botMotor;
+            botHinge.useMotor = false;
         }
     }
 }
