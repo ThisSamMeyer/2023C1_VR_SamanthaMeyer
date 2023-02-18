@@ -38,13 +38,11 @@ public class ElbowOneRotation : MonoBehaviour
         }
         else
         {
-            botMotor.force = 200;
             botMotor.targetVelocity = 0;
+            botMotor.force = 400;
             botMotor.freeSpin = false;
             botHinge.motor = botMotor;
             botHinge.useMotor = false;
         }
-
-        // Debug.Log("Elbow_01 Motor Force: " + botMotor.force);
     }
 }

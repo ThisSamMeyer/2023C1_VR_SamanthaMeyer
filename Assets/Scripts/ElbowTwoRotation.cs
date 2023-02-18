@@ -38,8 +38,8 @@ public class ElbowTwoRotation : MonoBehaviour
         }
         else
         {
-            botMotor.force = 200;
             botMotor.targetVelocity = 0;
+            botMotor.force = 400;
             botMotor.freeSpin = false;
             botHinge.motor = botMotor;
             botHinge.useMotor = false;
