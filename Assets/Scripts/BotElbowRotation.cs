@@ -15,13 +15,13 @@ public class BotElbowRotation : MonoBehaviour
     public float angleLeverTwo;     //leverAngle
 
     // Elbow One declarations
-    public GameObject ElbowOne;     // botElbowOne
+    public GameObject elbowOne;     // botElbowOne
     HingeJoint hingeElbowOne;       // botHinge
     JointMotor motorElbowOne;       // botMotor
     public float angleElbowOne;     // botAngle
 
     // Elbow Two declarations
-    public GameObject ElbowTwo;     // botElbowOne*
+    public GameObject elbowTwo;     // botElbowOne*
     HingeJoint hingeElbowTwo;       // botHinge
     JointMotor motorElbowTwo;       // botMotor
     public float angleElbowTwo;     //botAngle
@@ -30,8 +30,8 @@ public class BotElbowRotation : MonoBehaviour
     void Start()
     {
         // Assign bot elbow hinges
-        hingeElbowOne = ElbowOne.GetComponent<HingeJoint>();
-        hingeElbowTwo = ElbowTwo.GetComponent<HingeJoint>();
+        hingeElbowOne = elbowOne.GetComponent<HingeJoint>();
+        hingeElbowTwo = elbowTwo.GetComponent<HingeJoint>();
 
         // Assign controller lever hinges
         hingeLeverOne = leverOne.GetComponent<HingeJoint>();

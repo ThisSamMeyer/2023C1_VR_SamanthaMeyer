@@ -4,45 +4,58 @@ using UnityEngine;
 
 public class ElbowTwoRotation : MonoBehaviour
 {
-    public GameObject lever;
-    public GameObject botElbowTwo;
+    public GameObject leverTwo;
+    public GameObject elbowTwo;
 
-    HingeJoint botHinge;
-    HingeJoint leverHinge;
-    JointMotor botMotor;
+    HingeJoint hingeElbowTwo;
+    HingeJoint hingeLeverTwo;
+    JointMotor motorElbowTwo;
 
-    public float leverAngle;
-    public float botAngle;
+    public float angleLeverTwo;
+    public float angleElbowTwo;
+
+    float lastFrameLeverAngle;
 
     // Start is called before the first frame update
     void Start()
     {
-        botHinge = botElbowTwo.GetComponent<HingeJoint>();
-        leverHinge = lever.GetComponent<HingeJoint>();
-        botMotor = botHinge.motor;
+        hingeElbowTwo = elbowTwo.GetComponent<HingeJoint>();
+        hingeLeverTwo = leverTwo.GetComponent<HingeJoint>();
+        motorElbowTwo = hingeElbowTwo.motor;
     }
 
     // Update is called once per frame
     void Update()
     {
-        leverAngle = leverHinge.angle;
-        botAngle = botHinge.angle;
+        angleLeverTwo = hingeLeverTwo.angle;
+        angleElbowTwo = hingeElbowTwo.angle;
 
-        if (leverAngle > 10 || leverAngle < -10)
+        float diffAngleLeverTwo = hingeLeverTwo.angle - lastFrameLeverAngle;
+
+        motorElbowTwo.targetVelocity = hingeLeverTwo.angle / 10;
+        motorElbowTwo.force = 100;
+        motorElbowTwo.freeSpin = false;
+        hingeElbowTwo.motor = motorElbowTwo;
+        hingeElbowTwo.useMotor = true;
+
+/*        if (angleLeverTwo > 10 || angleLeverTwo < -10)
         {
-            botHinge.useMotor = true;
-            botMotor.force = 100;
-            botMotor.targetVelocity = leverAngle / 2;
-            botMotor.freeSpin = false;
-            botHinge.motor = botMotor;
+            hingeElbowTwo.useMotor = true;
+            motorElbowTwo.force = 100;
+            motorElbowTwo.targetVelocity = angleLeverTwo / 2;
+            motorElbowTwo.freeSpin = false;
+            hingeElbowTwo.motor = motorElbowTwo;
         }
         else
         {
-            botMotor.targetVelocity = 0;
-            botMotor.force = 400;
-            botMotor.freeSpin = false;
-            botHinge.motor = botMotor;
-            botHinge.useMotor = false;
+            hingeElbowTwo.useMotor = true;
+            motorElbowTwo.targetVelocity = 0;
+            motorElbowTwo.force = 100;
+            motorElbowTwo.freeSpin = false;
+            hingeElbowTwo.motor = motorElbowTwo;
+            // hingeElbowTwo.useMotor = false;
         }
+*/
+        lastFrameLeverAngle = hingeLeverTwo.angle;
     }
 }
