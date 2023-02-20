@@ -9,7 +9,6 @@ public class ElbowOneRotation : MonoBehaviour
 
     HingeJoint hingeElbowOne;
     HingeJoint hingeLeverOne;
-    JointMotor motorElbowOne;
     JointSpring springElbowOne;
 
     public float angleLeverOne;
@@ -20,7 +19,6 @@ public class ElbowOneRotation : MonoBehaviour
     {
         hingeElbowOne = elbowOne.GetComponent<HingeJoint>();
         hingeLeverOne = leverOne.GetComponent<HingeJoint>();
-        motorElbowOne = hingeElbowOne.motor;
         springElbowOne = hingeElbowOne.spring;
     }
 
@@ -29,38 +27,23 @@ public class ElbowOneRotation : MonoBehaviour
     {
         angleLeverOne = hingeLeverOne.angle;
         angleElbowOne = hingeElbowOne.angle;
+        float angleFraction;
 
-        if(angleLeverOne > 5 || angleLeverOne < -5)
+        if(angleLeverOne < 0)
         {
-            springElbowOne.targetPosition = angleElbowOne + angleLeverOne;
-            hingeElbowOne.spring = springElbowOne;
-        }
-
-
-/*        motorElbowOne.targetVelocity = hingeLeverOne.angle / 10;
-        motorElbowOne.force = 100;
-        motorElbowOne.freeSpin = false;
-        hingeElbowOne.motor = motorElbowOne;
-        hingeElbowOne.useMotor = true;
-*/
-
-/*        if(angleLeverOne > 10 || angleLeverOne < -10)
-        {
-            hingeElbowOne.useMotor = true;
-            motorElbowOne.force = 100;
-            motorElbowOne.targetVelocity = angleLeverOne / 2;
-            motorElbowOne.freeSpin = false;
-            hingeElbowOne.motor = motorElbowOne;
+            angleFraction = angleLeverOne / hingeLeverOne.limits.min;
         }
         else
         {
-            hingeElbowOne.useMotor = true;
-            motorElbowOne.targetVelocity = 0;
-            motorElbowOne.force = 100;
-            motorElbowOne.freeSpin = false;
-            hingeElbowOne.motor = motorElbowOne;
-            // hingeElbowOne.useMotor = false;
+            angleFraction = angleLeverOne / hingeLeverOne.limits.max;
         }
-*/
+
+        if (angleLeverOne > 1 || angleLeverOne < -1)
+        {
+            springElbowOne.targetPosition = angleElbowOne + angleLeverOne;
+            springElbowOne.spring = angleFraction * 100;
+            hingeElbowOne.spring = springElbowOne;
+        }
+
     }
 }

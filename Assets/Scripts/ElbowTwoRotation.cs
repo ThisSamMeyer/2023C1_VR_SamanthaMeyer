@@ -9,19 +9,17 @@ public class ElbowTwoRotation : MonoBehaviour
 
     HingeJoint hingeElbowTwo;
     HingeJoint hingeLeverTwo;
-    JointMotor motorElbowTwo;
+    JointSpring springElbowTwo;
 
     public float angleLeverTwo;
     public float angleElbowTwo;
-
-    float lastFrameLeverAngle;
 
     // Start is called before the first frame update
     void Start()
     {
         hingeElbowTwo = elbowTwo.GetComponent<HingeJoint>();
         hingeLeverTwo = leverTwo.GetComponent<HingeJoint>();
-        motorElbowTwo = hingeElbowTwo.motor;
+        springElbowTwo = hingeElbowTwo.spring;
     }
 
     // Update is called once per frame
@@ -29,33 +27,23 @@ public class ElbowTwoRotation : MonoBehaviour
     {
         angleLeverTwo = hingeLeverTwo.angle;
         angleElbowTwo = hingeElbowTwo.angle;
+        float angleFraction;
 
-        float diffAngleLeverTwo = hingeLeverTwo.angle - lastFrameLeverAngle;
-
-        motorElbowTwo.targetVelocity = hingeLeverTwo.angle / 10;
-        motorElbowTwo.force = 100;
-        motorElbowTwo.freeSpin = false;
-        hingeElbowTwo.motor = motorElbowTwo;
-        hingeElbowTwo.useMotor = true;
-
-/*        if (angleLeverTwo > 10 || angleLeverTwo < -10)
+        if(angleLeverTwo < 0)
         {
-            hingeElbowTwo.useMotor = true;
-            motorElbowTwo.force = 100;
-            motorElbowTwo.targetVelocity = angleLeverTwo / 2;
-            motorElbowTwo.freeSpin = false;
-            hingeElbowTwo.motor = motorElbowTwo;
+            angleFraction = angleLeverTwo / hingeLeverTwo.limits.min;
         }
         else
         {
-            hingeElbowTwo.useMotor = true;
-            motorElbowTwo.targetVelocity = 0;
-            motorElbowTwo.force = 100;
-            motorElbowTwo.freeSpin = false;
-            hingeElbowTwo.motor = motorElbowTwo;
-            // hingeElbowTwo.useMotor = false;
+            angleFraction = angleLeverTwo / hingeLeverTwo.limits.max;
         }
-*/
-        lastFrameLeverAngle = hingeLeverTwo.angle;
+
+        if(angleLeverTwo > 1 || angleLeverTwo < -1)
+        {
+            springElbowTwo.targetPosition = angleElbowTwo + angleLeverTwo;
+            springElbowTwo.spring = angleFraction * 100;
+            hingeElbowTwo.spring = springElbowTwo;
+        }
+
     }
 }
