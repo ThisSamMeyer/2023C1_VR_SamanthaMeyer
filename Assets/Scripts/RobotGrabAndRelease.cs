@@ -27,7 +27,8 @@ public class RobotGrabAndRelease : MonoBehaviour
             grabEnabled = false;
         }
 
-        if (collidedObject.CompareTag("RegularCube") || collidedObject.CompareTag("CompanionCube"))
+
+        if (collidedObject && (collidedObject.CompareTag("RegularCube") || collidedObject.CompareTag("CompanionCube")))
         {
             // make release lever light up
 
@@ -35,9 +36,11 @@ public class RobotGrabAndRelease : MonoBehaviour
             {
                 FixedJoint cubeJoint = collidedObject.AddComponent<FixedJoint>();
                 cubeJoint.connectedBody = robotMagnet.GetComponent<Rigidbody>();
+                collidedObject.GetComponent<Rigidbody>().useGravity = false;
             }
             if(!grabEnabled && collidedObject.GetComponent<FixedJoint>())
             {
+                collidedObject.GetComponent<Rigidbody>().useGravity = true;
                 Destroy(collidedObject.GetComponent<FixedJoint>());
             }
         }

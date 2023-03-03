@@ -13,6 +13,12 @@ public class BigButtonPush : MonoBehaviour
     private float upperLowerDiff;
     public bool isPressed;
     private bool prevPressedState;
+
+    public GameObject doorOne;
+    public GameObject doorTwo;
+    public Transform doorOneOpen;
+    public Transform doorTwoOpen;
+
     public UnityEvent onPressed;
     public UnityEvent onReleased;
     
@@ -49,7 +55,7 @@ public class BigButtonPush : MonoBehaviour
             buttonTop.transform.position = new Vector3(buttonLowerLimit.position.x, buttonLowerLimit.position.y, buttonLowerLimit.position.z);
         }
 
-        // find if the button it pressed or not
+        // find if the button is pressed or not
         if (Vector3.Distance(buttonTop.position, buttonLowerLimit.position) < upperLowerDiff * threshHold)
         {
             isPressed = true;
@@ -57,6 +63,11 @@ public class BigButtonPush : MonoBehaviour
         else
         {
             isPressed = false;
+        }
+
+        if (isPressed)
+        {
+            doorOne.transform.Translate(Vector3.right * Time.deltaTime);
         }
 
         // if the state of isPressed changes, call the pressed or released functions
