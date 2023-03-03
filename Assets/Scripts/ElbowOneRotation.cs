@@ -10,9 +10,13 @@ public class ElbowOneRotation : MonoBehaviour
     HingeJoint hingeElbowOne;
     HingeJoint hingeLeverOne;
     JointSpring springElbowOne;
+    JointMotor motorElbowOne;
 
     public float angleLeverOne;
     public float angleElbowOne;
+
+    float startingMinimum = 0f;
+    float startingMaximum = 115;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +24,7 @@ public class ElbowOneRotation : MonoBehaviour
         hingeElbowOne = elbowOne.GetComponent<HingeJoint>();
         hingeLeverOne = leverOne.GetComponent<HingeJoint>();
         springElbowOne = hingeElbowOne.spring;
+        motorElbowOne = hingeElbowOne.motor;
     }
 
     // Update is called once per frame
@@ -27,23 +32,14 @@ public class ElbowOneRotation : MonoBehaviour
     {
         angleLeverOne = hingeLeverOne.angle;
         angleElbowOne = hingeElbowOne.angle;
-        float angleFraction;
-
-        if(angleLeverOne < 0)
-        {
-            angleFraction = angleLeverOne / hingeLeverOne.limits.min;
-        }
-        else
-        {
-            angleFraction = angleLeverOne / hingeLeverOne.limits.max;
-        }
+        float angleFraction = angleLeverOne / (startingMaximum - startingMinimum);
 
         if (angleLeverOne > 1 || angleLeverOne < -1)
         {
-            springElbowOne.targetPosition = angleElbowOne + angleLeverOne;
-            springElbowOne.spring = angleFraction * 100;
-            hingeElbowOne.spring = springElbowOne;
+            motorElbowOne.targetVelocity = angleFraction * 100;
+            motorElbowOne.force = 500;
+            hingeElbowOne.motor = motorElbowOne;
+            hingeElbowOne.useMotor = true;
         }
-
     }
 }

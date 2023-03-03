@@ -38,12 +38,17 @@ public class ElbowTwoRotation : MonoBehaviour
             angleFraction = angleLeverTwo / hingeLeverTwo.limits.max;
         }
 
-        if(angleLeverTwo > 1 || angleLeverTwo < -1)
+        if(angleLeverTwo > 1)
         {
-            springElbowTwo.targetPosition = angleElbowTwo + angleLeverTwo;
-            springElbowTwo.spring = angleFraction * 100;
+            springElbowTwo.targetPosition = hingeElbowTwo.limits.max;
+            springElbowTwo.spring = angleFraction * 50;
             hingeElbowTwo.spring = springElbowTwo;
         }
-
+        if(angleLeverTwo < -1)
+        {
+            springElbowTwo.targetPosition = hingeElbowTwo.limits.min;
+            springElbowTwo.spring = angleFraction * 50;
+            hingeElbowTwo.spring = springElbowTwo;
+        }
     }
 }
