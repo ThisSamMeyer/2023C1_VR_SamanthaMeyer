@@ -6196,8 +6196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f82dc673092c7469937441662f8799, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
-  floorReference: {fileID: 0}
+  mainCamera: {fileID: 935457760}
+  floorReference: {fileID: 166688617}
 --- !u!136 &1115955003
 CapsuleCollider:
   m_ObjectHideFlags: 0
