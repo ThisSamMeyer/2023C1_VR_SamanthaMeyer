@@ -6,6 +6,7 @@ public class RobotArmMovement : MonoBehaviour
 {
     public GameObject controlLever;
     public GameObject robotElbow;
+    public AudioSource robotSound;
 
     HingeJoint elbowHinge;
     HingeJoint leverHinge;
@@ -13,6 +14,7 @@ public class RobotArmMovement : MonoBehaviour
 
     public float leverAngle;
     public float elbowAngle;
+    float lastFramesAngle;
 
     // Start is called before the first frame update
     void Start()
@@ -44,19 +46,6 @@ public class RobotArmMovement : MonoBehaviour
             elbowHinge.spring = elbowSpring;
         }
 
-        /*
-        if (leverAngle > 1)
-        {
-            elbowSpring.targetPosition = elbowHinge.limits.max;
-            elbowSpring.spring = angleFraction * 50;
-            elbowHinge.spring = elbowSpring;
-        }
-        if (leverAngle < -1)
-        {
-            elbowSpring.targetPosition = elbowHinge.limits.min;
-            elbowSpring.spring = angleFraction * 50;
-            elbowHinge.spring = elbowSpring;
-        }
-        */
+        lastFramesAngle = elbowHinge.angle;
     }
 }
