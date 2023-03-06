@@ -11,6 +11,8 @@ public class GrabAndReleaseTrigger : MonoBehaviour
     HingeJoint grabTriggerHinge;
     GameObject collidedObject;
     bool grabEnabled;
+    bool isCube;
+    bool prevGrabState;
     public float threshHold;
 
     void Start()
@@ -20,42 +22,79 @@ public class GrabAndReleaseTrigger : MonoBehaviour
 
     void Update()
     {
-        if (grabTriggerHinge.angle >= grabTriggerHinge.limits.max - threshHold)
+        if (isCube)
         {
-            grabEnabled = true;
+            // lever lights up when magnet is touching a cube
+            grabTrigger.GetComponentInChildren<MeshRenderer>().material = triggerOnMat;
+
+            if (grabTriggerHinge.angle >= grabTriggerHinge.limits.max - threshHold)
+            {
+                grabEnabled = true;
+            }
+            else
+            {
+                grabEnabled = false;
+            }
         }
         else
         {
-            grabEnabled = false;
+            // lever does not light up when magnet is not touching a cube
             grabTrigger.GetComponentInChildren<MeshRenderer>().material = triggerOffMat;
         }
 
-
-        if (collidedObject && (collidedObject.CompareTag("RegularCube") || collidedObject.CompareTag("CompanionCube")))
+        if (grabEnabled && prevGrabState != grabEnabled)
         {
-            // make lever light up when magnet has collided with an object
-            grabTrigger.GetComponentInChildren<MeshRenderer>().material = triggerOnMat;
-
-            // grab object when lever is pulled
-            if (grabEnabled && !collidedObject.GetComponent<FixedJoint>())
-            {
-                FixedJoint cubeJoint = collidedObject.AddComponent<FixedJoint>();
-                cubeJoint.connectedBody = robotMagnet.GetComponent<Rigidbody>();
-                collidedObject.GetComponent<Rigidbody>().useGravity = false;
-            }
-            if(!grabEnabled && collidedObject.GetComponent<FixedJoint>())
-            {
-                collidedObject.GetComponent<Rigidbody>().useGravity = true;
-                Destroy(collidedObject.GetComponent<FixedJoint>());
-                collidedObject = null;
-            }
+            prevGrabState = grabEnabled;
+            Grab();
+        }
+        if (!grabEnabled && prevGrabState != grabEnabled)
+        {
+            prevGrabState = grabEnabled;
+            Release();
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("we hit something");
-
         collidedObject = collision.gameObject;
+
+        if (collision.gameObject.CompareTag("RegularCube") || collision.gameObject.CompareTag("CompanionCube"))
+        {
+            isCube = true;
+        }
+
+        Debug.Log("Collision Enter - isCube: " + isCube);
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        collidedObject = collision.gameObject;
+
+        if (collision.gameObject.CompareTag("RegularCube") || collision.gameObject.CompareTag("CompanionCube"))
+        {
+            isCube = false;
+        }
+
+        Debug.Log("Collision Exit - isCube: " + collision.gameObject);
+    }
+
+    private void Grab()
+    {
+        if (!collidedObject.GetComponent<FixedJoint>())
+        {
+            FixedJoint cubeJoint = collidedObject.AddComponent<FixedJoint>();
+            cubeJoint.connectedBody = robotMagnet.GetComponent<Rigidbody>();
+            collidedObject.GetComponent<Rigidbody>().useGravity = false;
+        }
+    }
+
+    private void Release()
+    {
+        if (collidedObject.GetComponent<FixedJoint>())
+        {
+            collidedObject.GetComponent<Rigidbody>().useGravity = true;
+            Destroy(collidedObject.GetComponent<FixedJoint>());
+            collidedObject = null;
+        }
     }
 }

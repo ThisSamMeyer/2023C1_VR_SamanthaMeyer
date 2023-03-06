@@ -39,7 +39,7 @@ public class DoorTrigger : MonoBehaviour
 
     void Update()
     {
-        if (buttonTrigger.isPressed)
+        if (buttonTrigger.isPressed && buttonTrigger.isCompanion)
         {
             doorOne.transform.position = Vector3.MoveTowards(doorOne.transform.position, openPosOne, doorSpeed * Time.deltaTime);
             doorTwo.transform.position = Vector3.MoveTowards(doorTwo.transform.position, openPosTwo, doorSpeed * Time.deltaTime);
