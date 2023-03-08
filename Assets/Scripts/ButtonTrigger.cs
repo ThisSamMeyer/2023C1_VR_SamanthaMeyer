@@ -5,9 +5,6 @@ using UnityEngine.Events;
 
 public class ButtonTrigger : MonoBehaviour
 {
-    public GameObject cake;
-    public GameObject cakeLight;
-
     public Transform buttonTop;
     public Transform buttonLowerLimit;
     public Transform buttonUpperLimit;
@@ -18,8 +15,6 @@ public class ButtonTrigger : MonoBehaviour
     public bool isPressed;
     public bool isCompanion;
     public bool prevPressedState;
-    public bool doorsOpen;
-    public bool doorsClosed;
 
     public UnityEvent onPressed;
     public UnityEvent onReleased;
@@ -79,9 +74,6 @@ public class ButtonTrigger : MonoBehaviour
         prevPressedState = isPressed;
         Debug.Log("PRESSED");
         onPressed.Invoke();
-        doorsOpen = true;
-        cake.GetComponent<Animator>().SetBool("RotateOn", true);
-        cakeLight.GetComponent<Animator>().SetBool("LightOn", true);
     }
 
     private void Released()
@@ -89,8 +81,6 @@ public class ButtonTrigger : MonoBehaviour
         prevPressedState = isPressed;
         Debug.Log("RELEASED");
         onReleased.Invoke();
-        cake.GetComponent<Animator>().SetBool("RotateOn", false);
-        cakeLight.GetComponent<Animator>().SetBool("LightOn", false);
     }
 
     private void OnCollisionEnter(Collision collision)

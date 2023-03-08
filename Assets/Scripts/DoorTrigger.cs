@@ -5,8 +5,9 @@ using UnityEngine;
 public class DoorTrigger : MonoBehaviour
 {
     ButtonTrigger buttonTrigger;
+    public GameObject doorButton;
 
-    public GameObject button;
+    public GameObject cake;
 
     GameObject doorOne;
     GameObject doorTwo;
@@ -16,11 +17,13 @@ public class DoorTrigger : MonoBehaviour
     Vector3 startPosOne;
     Vector3 startPosTwo;
 
+    public bool doorsOpen;
+
     float doorSpeed = 0.5f;
 
     private void Awake()
     {
-        buttonTrigger = button.GetComponent<ButtonTrigger>();
+        buttonTrigger = doorButton.GetComponent<ButtonTrigger>();
     }
 
     void Start()
@@ -45,14 +48,15 @@ public class DoorTrigger : MonoBehaviour
         {
             doorOne.transform.position = Vector3.MoveTowards(doorOne.transform.position, openPosOne, doorSpeed * Time.deltaTime);
             doorTwo.transform.position = Vector3.MoveTowards(doorTwo.transform.position, openPosTwo, doorSpeed * Time.deltaTime);
-
+            doorsOpen = true;
+            cake.GetComponent<Animator>().SetBool("TurnOn", true);
         }
-        if (!buttonTrigger.isPressed)
+        else
         {
             doorOne.transform.position = Vector3.MoveTowards(doorOne.transform.position, startPosOne, doorSpeed * Time.deltaTime);
             doorTwo.transform.position = Vector3.MoveTowards(doorTwo.transform.position, startPosTwo, doorSpeed * Time.deltaTime);
-
+            doorsOpen = false;
+            cake.GetComponent<Animator>().SetBool("TurnOn", false);
         }
-        
     }
 }
