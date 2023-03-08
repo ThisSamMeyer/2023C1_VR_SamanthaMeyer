@@ -25,6 +25,7 @@ public class RobotBaseRotation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         leverAngle = leverHinge.angle;
         baseAngle = baseHinge.angle;
 
