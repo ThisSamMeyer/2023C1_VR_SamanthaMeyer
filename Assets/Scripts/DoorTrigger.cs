@@ -7,6 +7,7 @@ public class DoorTrigger : MonoBehaviour
     ButtonTrigger buttonTrigger;
 
     public GameObject button;
+
     GameObject doorOne;
     GameObject doorTwo;
 
@@ -15,7 +16,7 @@ public class DoorTrigger : MonoBehaviour
     Vector3 startPosOne;
     Vector3 startPosTwo;
 
-    public float doorSpeed = 10f;
+    float doorSpeed = 0.5f;
 
     private void Awake()
     {
@@ -33,16 +34,18 @@ public class DoorTrigger : MonoBehaviour
         startPosTwo = doorTwo.transform.position;
 
         // set target postion of each door
-        openPosOne = new Vector3(startPosOne.x - 1, startPosOne.y, startPosOne.z);
-        openPosTwo = new Vector3(startPosTwo.x + 1, startPosTwo.y, startPosTwo.z);
+        openPosOne = new Vector3(startPosOne.x, startPosOne.y, startPosOne.z + 1);
+        openPosTwo = new Vector3(startPosTwo.x, startPosTwo.y, startPosTwo.z - 1);
     }
 
     void Update()
     {
+        
         if (buttonTrigger.isPressed && buttonTrigger.isCompanion)
         {
             doorOne.transform.position = Vector3.MoveTowards(doorOne.transform.position, openPosOne, doorSpeed * Time.deltaTime);
             doorTwo.transform.position = Vector3.MoveTowards(doorTwo.transform.position, openPosTwo, doorSpeed * Time.deltaTime);
+
         }
         if (!buttonTrigger.isPressed)
         {
@@ -50,5 +53,6 @@ public class DoorTrigger : MonoBehaviour
             doorTwo.transform.position = Vector3.MoveTowards(doorTwo.transform.position, startPosTwo, doorSpeed * Time.deltaTime);
 
         }
+        
     }
 }
