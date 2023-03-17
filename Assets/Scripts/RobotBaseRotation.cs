@@ -5,30 +5,24 @@ using UnityEngine;
 public class RobotBaseRotation : MonoBehaviour
 {
     public GameObject lever;
-    public GameObject armBase;
+    public GameObject robotBase;
 
     HingeJoint baseHinge;
     HingeJoint leverHinge;
-    JointSpring baseSpring;
+    JointMotor baseMotor;
 
     public float leverAngle;
-    public float baseAngle;
 
-    // Start is called before the first frame update
     void Start()
     {
         leverHinge = lever.GetComponent<HingeJoint>();
-        baseHinge = armBase.GetComponent<HingeJoint>();
-        baseSpring = baseHinge.spring;
+        baseHinge = robotBase.GetComponent<HingeJoint>();
+        baseMotor = baseHinge.motor;
     }
 
-    // Update is called once per frame
     void Update()
     {
-
         leverAngle = leverHinge.angle;
-        baseAngle = baseHinge.angle;
-
         float angleFraction;
 
         if (leverAngle < 0)
@@ -40,11 +34,33 @@ public class RobotBaseRotation : MonoBehaviour
             angleFraction = leverAngle / leverHinge.limits.max;
         }
 
-        if(leverAngle > 1 || leverAngle < -1)
+        if(leverAngle > 1)
         {
-            baseSpring.targetPosition = baseAngle + leverAngle;
-            baseSpring.spring = angleFraction * 150;
-            baseHinge.spring = baseSpring;
+            RotateClockwise(angleFraction);
         }
+        else if(leverAngle < -1)
+        {
+            RotateCounterClockwise(angleFraction);
+        }
+        else
+        {
+            baseHinge.useMotor = false;
+        }
+    }
+
+    public void RotateClockwise(float speed)
+    {
+        baseMotor.targetVelocity = 100 * speed;
+        baseMotor.force = 100 * speed;
+        baseHinge.motor = baseMotor;
+        baseHinge.useMotor = true;
+    }
+
+    public void RotateCounterClockwise(float speed)
+    {
+        baseMotor.targetVelocity = -100 * speed;
+        baseMotor.force = 100 * speed;
+        baseHinge.motor = baseMotor;
+        baseHinge.useMotor = true;
     }
 }

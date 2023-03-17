@@ -8,6 +8,7 @@ public class GrabAndReleaseTrigger : MonoBehaviour
     public GameObject robotMagnet;
     public Material triggerOnMat;
     public Material triggerOffMat;
+    public Material magnetMat;
     HingeJoint grabTriggerHinge;
     GameObject collidedObject;
     bool grabEnabled;
@@ -26,6 +27,7 @@ public class GrabAndReleaseTrigger : MonoBehaviour
         {
             // lever lights up when magnet is touching a cube
             grabTrigger.GetComponentInChildren<MeshRenderer>().material = triggerOnMat;
+            robotMagnet.GetComponent<MeshRenderer>().material = triggerOnMat;
 
             if (grabTriggerHinge.angle >= grabTriggerHinge.limits.max - threshHold)
             {
@@ -40,6 +42,7 @@ public class GrabAndReleaseTrigger : MonoBehaviour
         {
             // lever does not light up when magnet is not touching a cube
             grabTrigger.GetComponentInChildren<MeshRenderer>().material = triggerOffMat;
+            robotMagnet.GetComponent<MeshRenderer>().material = magnetMat;
         }
 
         if (grabEnabled && prevGrabState != grabEnabled)
